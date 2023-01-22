@@ -1,0 +1,56 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Coparenting" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryVariant">@color/dark_gray</item>
+        <item name="colorOnPrimary">@color/extra_extra_light_gray</item>
+        <item name="android:textColorPrimary">@color/extra_extra_light_gray</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/dark_gray</item>
+        <item name="colorSecondaryVariant">@color/black</item>
+        <item name="colorOnSecondary">@color/extra_extra_light_gray</item>
+        <item name="colorSurface">@color/black</item>
+        <item name="colorOnSurface">@color/extra_extra_light_gray</item>
+        <item name="colorAccent">@color/blue</item>
+        <item name="colorOutline">@color/extra_extra_light_gray</item>
+        <item name="itemBackground">@drawable/gradient_bg</item>
+        <item name="android:colorBackground">?attr/colorPrimary</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/gradient_bg</item>
+
+        <item name="android:textColor">@color/extra_extra_light_gray</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="itemIconTint">@color/extra_extra_light_gray</item>
+    </style>
+    <style name="textSmall">
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="textMedium">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:layout_marginVertical" tools:targetApi="o">4dp</item>
+    </style>
+    <style name="whiteText">
+        <item name="android:textColor">@color/extra_extra_light_gray</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="greyText">
+        <item name="android:textColor">@color/light_gray</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="whiteText.small">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="greyText.small">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+</resources>

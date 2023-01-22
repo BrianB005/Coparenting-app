@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp"
+    tools:ignore="HardCodedText"
+    tools:context=".WelcomeActivity">
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/logo_card"
+        app:cardCornerRadius="50dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+
+            android:contentDescription="Logo"
+            android:id="@+id/logo"
+            android:src="@drawable/coparent3"/>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/textSmall"
+        android:text="We help separated parents communicate effectively and organize for the well-being of their children."
+        android:layout_below="@id/logo_card"
+        android:layout_marginTop="30dp"
+
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        >
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager"
+            android:layout_width="280dp"
+            android:layout_height="260dp"
+            />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabBackground="@drawable/tab_selector"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:orientation="vertical">
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create my account"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/extra_extra_light_gray"
+
+            android:textAllCaps="false"
+            app:cornerRadius="20dp"
+
+            android:elevation="20dp"
+            android:paddingVertical="6dp"
+            android:paddingHorizontal="25dp"
+            android:outlineSpotShadowColor="@color/light_gray"
+            android:outlineAmbientShadowColor="@color/light_gray"
+            android:id="@+id/open_register"
+
+            tools:ignore="UnusedAttribute" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/dark_gray"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:text="Already have an account?"
+
+                android:textSize="14sp"
+                />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/dark_gray"/>
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login "
+            android:backgroundTint="@color/black"
+            android:textColor="@color/extra_extra_light_gray"
+            android:textAllCaps="false"
+            app:cornerRadius="20dp"
+            android:elevation="20dp"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="25dp"
+            android:outlineSpotShadowColor="@color/light_gray"
+            android:outlineAmbientShadowColor="@color/light_gray"
+            android:id="@+id/open_login"
+            tools:ignore="UnusedAttribute" />
+    </LinearLayout>
+
+</RelativeLayout>

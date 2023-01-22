@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:backgroundTint="@color/light_black"
+    app:cardCornerRadius="20dp"
+    android:layout_marginHorizontal="10dp"
+    android:layout_height="wrap_content">
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:gravity="center"
+        tools:ignore="HardCodedText"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Message"
+
+            />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_marginVertical="6dp"
+            android:layout_height="1dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="To:"
+                style="@style/greyText"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stella kay"
+                android:id="@+id/recipient_name"
+                android:layout_marginStart="5dp"
+                style="@style/whiteText"
+                />
+            
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subject:"
+                style="@style/greyText"
+                />
+           <EditText
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginStart="4dp"
+               android:id="@+id/subject_input"
+               android:hint="Enter subject"
+               android:textColor="@color/extra_extra_light_gray"
+               android:textColorHint="@color/dark_gray"
+               android:autofillHints="@null"
+               android:padding="4dp"
+               android:inputType="textAutoComplete"><requestFocus/></EditText>
+
+        </LinearLayout>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="4dp"
+            android:layout_marginStart="4dp"
+            android:id="@+id/body_input"
+            android:hint="Enter content"
+            android:textColor="@color/extra_extra_light_gray"
+            android:textColorHint="@color/dark_gray"
+            android:autofillHints="@null"
+            android:lines="6"
+            android:gravity="start"
+            android:padding="10dp"
+            android:inputType="textAutoComplete|textMultiLine"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="8dp"
+            >
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_insert_photo_24"
+                android:backgroundTint="@color/light_black"
+                android:id="@+id/share_image"
+                android:contentDescription="select image"
+                android:layout_marginEnd="20dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+
+                />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_videocam_24"
+                android:backgroundTint="@color/light_black"
+                android:id="@+id/share_video"
+                android:contentDescription="select video"
+                android:layout_marginEnd="20dp"
+                android:clickable="true"
+
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+
+                />
+
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_picture_as_pdf_24"
+                android:backgroundTint="@color/light_black"
+                android:id="@+id/share_pdf"
+                android:clickable="true"
+                android:focusable="true"
+
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="share pdf" />
+
+        </LinearLayout>
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="4dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_marginTop="8dp"
+            >
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                app:cornerRadius="20dp"
+                android:text="Cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/extra_light_gray"
+                android:textSize="15sp"
+                android:id="@+id/cancel"
+                app:strokeColor="@color/blue"
+                app:strokeWidth="2dp"
+                style="?attr/materialButtonOutlinedStyle"
+
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/blue"
+                android:layout_marginStart="20dp"
+                android:paddingHorizontal="20dp"
+                app:cornerRadius="20dp"
+                android:drawableEnd="@drawable/ic_baseline_send_24"
+                android:text="Send "
+                android:textAllCaps="false"
+                android:textColor="@color/extra_light_gray"
+                android:textSize="15sp"
+                android:id="@+id/send_msg"
+
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:context=".LoginActivity"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="HardCodedText"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginHorizontal="20dp"
+>
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome BACK"
+            android:textAllCaps="true"
+            style="@style/textMedium"
+
+            />
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LOGIN TO YOUR ACCOUNT  "
+            android:textAllCaps="true"
+            style="@style/textMedium"
+            android:layout_marginBottom="20dp"
+
+            />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputEmail"
+            app:boxStrokeColor="@color/blue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextColor="@color/light_gray"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="Email address"
+            app:endIconMode="clear_text"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            android:layout_marginBottom="18dp"
+            app:boxCornerRadiusTopStart="12dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:id="@+id/inputEmail"
+
+                />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputPassword"
+            app:boxStrokeColor="@color/blue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextColor="@color/light_gray"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="Password"
+            app:endIconMode="password_toggle"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            android:layout_marginBottom="18dp"
+            app:boxCornerRadiusTopStart="12dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:id="@+id/input_password"
+
+                />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:layout_marginTop="30dp"
+            app:cornerRadius="20dp"
+            android:text="Login"
+            android:textAllCaps="false"
+            android:textColor="@color/extra_light_gray"
+            android:textSize="15sp"
+
+            android:id="@+id/login_btn"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Do not have an account?"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/dark_gray"
+            />
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create account"
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="@color/extra_extra_light_gray"
+            android:textAllCaps="false"
+            app:cornerRadius="20dp"
+
+            android:elevation="20dp"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="25dp"
+            android:outlineSpotShadowColor="@color/light_gray"
+            android:outlineAmbientShadowColor="@color/light_gray"
+            android:id="@+id/open_register"
+            app:strokeColor="@color/blue"
+            app:strokeWidth="2dp"
+            style="?attr/materialButtonOutlinedStyle"
+            tools:ignore="UnusedAttribute" />
+
+    </LinearLayout>
+</ScrollView>
