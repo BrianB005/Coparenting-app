@@ -31,7 +31,7 @@
                 android:id="@+id/profile_pic"
                 android:scaleType="centerCrop"
                 android:contentDescription="@null"
-                android:src="@drawable/kid1"
+
 
                 />
         </com.google.android.material.card.MaterialCardView>
@@ -64,9 +64,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tweet_title"
-            android:layout_marginBottom="4dp"
-            android:text="You can't ever reach perfection, but you can believe in an asymptote toward which you are ceaselessly striving.” “Human knowledge is never contained in one person"/>
+            android:id="@+id/title"
+            android:text=""
+            android:layout_marginVertical="4dp"
+            />
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="250dp"
@@ -75,21 +76,65 @@
             android:id="@+id/cardView"
 
             >
+            <GridLayout
+                android:id="@+id/gallery_item_grid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:columnCount="2"
+                android:rowCount="1">
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/memory_image"
+                android:id="@+id/gallery_image_1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:contentDescription="@null"
-                android:src="@drawable/kid2"
-                />
-            <VideoView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/memory_video"
+                android:contentDescription="image"
+                android:layout_margin="5dp"
                 android:visibility="gone"
+
                 />
 
+            <ImageView
+                android:id="@+id/gallery_image_2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+
+                android:visibility="gone"
+                android:layout_margin="5dp"
+                android:contentDescription="image" />
+                <ImageView
+                    android:id="@+id/gallery_image_3"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+
+                    android:visibility="gone"
+                    android:layout_margin="5dp"
+                    android:contentDescription="image"
+                    />
+                <ImageView
+                    android:id="@+id/gallery_image_4"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+
+                    android:visibility="gone"
+                    android:layout_margin="5dp"
+                    android:contentDescription="image"
+                    />
+            </GridLayout>
         </androidx.cardview.widget.CardView>
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -97,13 +142,14 @@
             android:layout_marginBottom="3dp"
             android:paddingVertical="10dp"
             >
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="7:32 PM"
-
+                android:text="01 sep 22"
                 style="@style/greyText"
-                android:id="@+id/tweet_time"
+                android:id="@+id/date"
+
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -115,11 +161,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="01 sep 22"
+                android:text="7:32 PM"
                 style="@style/greyText"
-                android:id="@+id/tweet_date"
-
+                android:id="@+id/time"
                 />
+
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardCodedText"
+    android:padding="30dp"
+    android:elevation="200dp"
+    android:gravity="center">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
+        android:backgroundTint="@color/light_black"
+
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:paddingTop="30dp"
+                android:paddingBottom="15dp"
+                android:text="New memory"
+                style="@style/whiteText"
+                />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:hint="Caption"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="18dp"
+            app:hintTextColor="@color/extra_extra_light_gray"
+            app:boxStrokeColor="@color/blue"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:endIconMode="clear_text"
+            android:layout_marginEnd="6dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/inputCaption"
+
+
+                >
+                <requestFocus/>
+            </com.google.android.material.textfield.TextInputEditText>
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:paddingHorizontal="20dp"
+            android:layout_height="wrap_content"
+            android:hint="Location(optional)"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="18dp"
+            app:hintTextColor="@color/extra_extra_light_gray"
+            app:boxStrokeColor="@color/blue"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:endIconMode="clear_text"
+            android:layout_marginEnd="6dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/inputLocation"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_insert_photo_24"
+            android:backgroundTint="@color/light_black"
+            android:id="@+id/share_image"
+            android:contentDescription="select image"
+           android:padding="6dp"
+            android:clickable="true"
+            android:layout_marginStart="14dp"
+            android:focusable="true"
+            android:paddingTop="15dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="30dp"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:id="@+id/selectedImage"
+                android:contentDescription="Image"
+                android:visibility="gone"
+                />
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:visibility="gone"
+                android:scrollbars="horizontal"
+                android:id="@+id/recycler_view"
+                />
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_marginTop="8dp"
+                android:paddingEnd="20dp"
+                android:paddingStart="0dp"
+                android:paddingBottom="24dp"
+                >
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    app:cornerRadius="20dp"
+                    android:text="Cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/extra_light_gray"
+                    android:textSize="15sp"
+                    android:id="@+id/cancel"
+                    app:strokeColor="@color/blue"
+                    app:strokeWidth="2dp"
+                    style="?attr/materialButtonOutlinedStyle"
+
+                    />
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/blue"
+                    android:layout_marginStart="20dp"
+                    android:paddingHorizontal="20dp"
+                    app:cornerRadius="20dp"
+                    android:text="Create"
+                    android:textAllCaps="false"
+                    android:textColor="@color/extra_light_gray"
+                    android:textSize="15sp"
+                    android:id="@+id/create"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

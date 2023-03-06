@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "134289652236",
+    "project_id": "coparenting-3bdf2",
+    "storage_bucket": "coparenting-3bdf2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134289652236:android:ea1d2eaa655f9fd2510c29",
+        "android_client_info": {
+          "package_name": "com.serah.coparenting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134289652236-h7r569kdge8hp4d486mat32abi5scat8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxInAGlnYAxhRxL2yfrt9z58avBQwBHKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134289652236-h7r569kdge8hp4d486mat32abi5scat8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

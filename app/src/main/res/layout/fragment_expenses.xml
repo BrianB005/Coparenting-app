@@ -1,38 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="20dp"
     tools:ignore="HardCodedText"
-    tools:context=".ExpensesFragment">
+    tools:context=".ExpensesFragment"
+    tools:targetApi="m">
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/progress_view"
+        android:visibility="gone"
+        android:indeterminateTint="@color/blue"
+        />
 
-    <RelativeLayout
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-       <include
-           layout="@layout/single_expense"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            android:id="@+id/recycler_view"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_baseline_add_24"
-            android:tint="@color/blue"
-            android:contentDescription="create new"
-            android:id="@+id/new_expense"
-            android:backgroundTint="@color/blue"
-            />
+        android:layout_height="match_parent"
 
-    </RelativeLayout>
+        android:id="@+id/recycler_view"
+
+        android:layout_above="@+id/newExpense"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_baseline_add_24"
+        android:tint="@color/blue"
+        android:contentDescription="create new"
+        android:id="@+id/newExpense"
+        android:backgroundTint="@color/blue"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="There are no expenses to show! Click the button at the bottom to create some"
+        android:layout_marginTop="100dp"
+        android:id="@+id/noExpenses"
+        android:padding="20dp"
+        android:visibility="gone"
+
+        />
+
+</RelativeLayout>
 
 
-</FrameLayout>

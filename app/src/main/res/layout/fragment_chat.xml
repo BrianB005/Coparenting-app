@@ -7,35 +7,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:padding="20dp"
+
         tools:ignore="HardCodedText"
-        android:foreground="@color/black"
         tools:context=".ChatFragment"
         tools:targetApi="m">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
-            <include
-                layout="@layout/single_incoming_message"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"/>
-            <include
-                layout="@layout/single_outgoing_message"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/progress_view"
+        android:visibility="gone"
+        android:indeterminateTint="@color/blue"
+        />
 
-                />
-
-        </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            android:layout_alignParentTop="true"
+            android:paddingVertical="10dp"
             android:id="@+id/recycler_view"
-
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            android:layout_above="@id/new_chat"
+            />
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,6 +40,125 @@
             android:id="@+id/new_chat"
             android:backgroundTint="@color/blue"
             />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="There are no messages to show! Click the button at the bottom to create some"
+        android:layout_marginTop="100dp"
+        android:id="@+id/noChats"
+        android:padding="20dp"
+        android:visibility="gone"
+
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/no_coparent"
+        android:paddingHorizontal="20dp"
+
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Coparent details"
+            style="@style/whiteText"
+            android:layout_marginBottom="10dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your co hasn't joined the app. For the app to work well ,enter his email below then we'll share with him how to join the app via email!"
+            style="@style/greyText.small"
+            />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputEmailLayout"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="10dp"
+            android:layout_height="wrap_content"
+            android:hint="Email Address"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="18dp"
+            app:hintTextColor="@color/extra_extra_light_gray"
+            app:boxStrokeColor="@color/blue"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:endIconMode="clear_text"
+            android:layout_marginEnd="6dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/inputEmail"
+
+
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send Email"
+            android:paddingVertical="6dp"
+            android:paddingHorizontal="20dp"
+            app:cornerRadius="17dp"
+            android:backgroundTint="@color/blue"
+            android:layout_gravity="center"
+            android:id="@+id/send_email"
+            style="@style/whiteText"
+            android:textAllCaps="false"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:text="Or"
+            style="@style/whiteText"
+            android:textSize="25sp"
+            android:gravity="center_horizontal"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You can copy the code below and share it with them. They'll add it while registering!"
+            style="@style/greyText"
+            android:textSize="17sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginVertical="12dp"
+
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="18njoai99"
+                android:id="@+id/userId"
+                style="@style/whiteText"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:drawableLeftCompat="@drawable/ic_baseline_content_copy_24"
+                android:padding="6dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:id="@+id/copy_to_clip_board"
+                android:layout_marginStart="25dp"
+                />
+        </LinearLayout>
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:backgroundTint="@color/dark_gray"
+            android:layout_marginVertical="10dp"
+            />
+    </LinearLayout>
 
     </RelativeLayout>
 

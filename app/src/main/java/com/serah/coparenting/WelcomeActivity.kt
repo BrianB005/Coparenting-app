@@ -21,9 +21,11 @@ class WelcomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.openLogin.setOnClickListener{
             startActivity(Intent(applicationContext,LoginActivity::class.java))
+            finish()
         }
         binding.openRegister.setOnClickListener{
             startActivity(Intent(applicationContext,RegisterActivity::class.java))
+            finish()
         }
 
         val viewPager=binding.viewPager

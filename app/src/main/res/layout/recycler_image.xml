@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_marginEnd="8dp"
+    tools:ignore="HardcodedText"
+    >
+<ImageView
+
+    android:id="@+id/imageView"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:scaleType="centerCrop"
+
+    android:contentDescription="image"
+
+    android:layout_marginBottom="10dp"
+    />
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="7dp"
+        android:paddingHorizontal="15dp"
+        android:text="Remove"
+        android:textAllCaps="false"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="#E43E2E"
+        android:id="@+id/remove"
+        />
+</LinearLayout>

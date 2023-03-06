@@ -17,7 +17,6 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:scaleType="centerCrop"
-
             android:contentDescription="Logo"
             android:id="@+id/logo"
             android:src="@drawable/coparent3"/>
@@ -30,13 +29,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select YES if your co has shared a code with you. If not then select NO so that you can create the code and share it with him/her"
+            android:text="Select YES if your co has shared a code with you. If not then select NO so that you can create the code and share it with him/her later."
+
         />
 
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:id="@+id/options"
             android:orientation="horizontal">
             <RadioButton android:id="@+id/yes"
                 android:layout_width="wrap_content"
@@ -57,76 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_alignParentBottom="true"
-        >
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputFirstname"
-            app:boxStrokeColor="@color/blue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:hintTextColor="@color/light_gray"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:hint="First name"
-            app:endIconMode="clear_text"
-            app:boxCornerRadiusBottomEnd="12dp"
-            app:boxCornerRadiusBottomStart="12dp"
-            app:boxCornerRadiusTopEnd="12dp"
-            android:layout_marginBottom="18dp"
-            app:boxCornerRadiusTopStart="12dp"
-            >
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textAutoComplete"
-                android:id="@+id/inputFirstName"
-
-                />
-
-
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLast"
-            app:boxStrokeColor="@color/blue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:hintTextColor="@color/light_gray"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:hint="Last name"
-            app:endIconMode="clear_text"
-            app:boxCornerRadiusBottomEnd="12dp"
-            app:boxCornerRadiusBottomStart="12dp"
-            app:boxCornerRadiusTopEnd="12dp"
-            android:layout_marginBottom="18dp"
-            app:boxCornerRadiusTopStart="12dp"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textAutoComplete"
-                android:id="@+id/inputLastName"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/blue"
-
-            app:cornerRadius="20dp"
-            android:text="Continue"
-            android:textAllCaps="false"
-            android:textColor="@color/extra_light_gray"
-            android:textSize="15sp"
-            android:id="@+id/continue_btn"
-
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
         android:layout_alignParentBottom="true"
         >
         <com.google.android.material.textfield.TextInputLayout
@@ -136,37 +68,47 @@
             android:layout_height="wrap_content"
             app:hintTextColor="@color/light_gray"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:hint="Enter 6 digit code"
+            android:hint="Enter the code sent to you!"
             app:endIconMode="clear_text"
             app:boxCornerRadiusBottomEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             android:layout_marginBottom="18dp"
             app:boxCornerRadiusTopStart="12dp"
+            android:visibility="gone"
             >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:inputType="textAutoComplete"
                 android:id="@+id/inputCode"
 
                 />
 
 
         </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Verifying code ..."
+            android:textColor="@color/blue"
+            style="@style/whiteText"
+            android:id="@+id/loading"
+            android:visibility="gone"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/blue"
+            android:visibility="gone"
             app:cornerRadius="20dp"
-            android:text="Submit code"
+            android:text="Continue"
             android:textAllCaps="false"
             android:textColor="@color/extra_light_gray"
             android:textSize="15sp"
-            android:id="@+id/submit_code"
-
+            android:id="@+id/continue_btn"
             />
     </LinearLayout>
 

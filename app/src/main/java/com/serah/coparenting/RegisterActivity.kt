@@ -54,18 +54,20 @@ class RegisterActivity : AppCompatActivity() {
                 val userDetails=HashMap<String,String>()
                 binding.registerBtn.text="Hold on ..."
                 binding.registerBtn.isEnabled=false
-                binding.registerBtn.setAllowClickWhenDisabled(false)
+//                binding.registerBtn.setAllowClickWhenDisabled(false)
                 userDetails["firstName"] = firstName
                 userDetails["lastName"] = lastName
                 userDetails["email"] = email
                 userDetails["phone"] = phone
                 userDetails["password"] = password
+
                 RetrofitHandler.register(userDetails,object :AuthUserInterface{
                     override fun success(user: AuthUser) {
                         MyPreferences.saveItemToSP(applicationContext,"token",user.token)
+                        MyPreferences.saveItemToSP(applicationContext,"userId",user.user.userId)
                         val intent=Intent(applicationContext,RegisterActivityTwo::class.java)
-                        intent.putExtra("userId",user.user.userId)
                         startActivity(intent)
+                        finish()
                     }
                     override fun failure(throwable: Throwable) {
                         Log.d("Exception",throwable.message!!)
@@ -82,6 +84,7 @@ class RegisterActivity : AppCompatActivity() {
         }
         binding.openLogin.setOnClickListener{
             startActivity(Intent(applicationContext,LoginActivity::class.java))
+            finish()
         }
 
     }
