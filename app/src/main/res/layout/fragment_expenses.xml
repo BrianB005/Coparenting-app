@@ -18,6 +18,34 @@
         android:visibility="gone"
         android:indeterminateTint="@color/blue"
         />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:id="@+id/no_internet"
+        android:visibility="gone"
+        android:layout_centerInParent="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:text="Oops!Cannot fetch expenses at the moment!"
+            style="@style/whiteText"
+            />
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:id="@+id/reload_btn"
+            android:text="Retry"
+            android:backgroundTint="@color/blue"
+            android:paddingHorizontal="30dp"
+            app:cornerRadius="8dp"
+            android:textAllCaps="false"
+            />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
@@ -32,7 +60,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="30dp"
         android:src="@drawable/ic_baseline_add_24"
         android:tint="@color/blue"
         android:contentDescription="create new"

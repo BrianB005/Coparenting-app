@@ -2,11 +2,16 @@ package com.serah.coparenting
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.text.format.DateUtils
 import android.util.Log
+import androidx.annotation.RequiresApi
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -14,10 +19,11 @@ class ConvertToDate {
     companion object {
         fun convertToDate(timestamp: String): Date? {
             val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS",Locale.getDefault());
-//            simpleDateFormat.timeZone = TimeZone.getTimeZone("Africa/Nairobi")
+            simpleDateFormat.timeZone = TimeZone.getTimeZone("UTC")
             var parsedDate: Date? = null;
             try {
                 parsedDate = simpleDateFormat.parse(timestamp)!!
+
             } catch (e: ParseException) {
                 Log.d("Exception", e.message!!)
             }
@@ -29,11 +35,9 @@ class ConvertToDate {
         fun getTime(mongoDBTimestamp: String?): String? {
              val dateFormat = SimpleDateFormat.getTimeInstance(DateFormat.SHORT,Locale.getDefault(),)
 
-            val date = convertToDate(mongoDBTimestamp!!)
-            val calendar = Calendar.getInstance()
-            calendar.time = date!!
-            calendar.timeZone = TimeZone.getTimeZone("Africa/Nairobi")
-            return dateFormat.format(calendar.time)
+            val date = convertToDate(mongoDBTimestamp!!)!!
+
+            return dateFormat.format(date)
         }
 
         fun getDate(mongoDBTimestamp: String?): String? {
@@ -52,26 +56,22 @@ class ConvertToDate {
             ).toString()
 //        return DateUtils.getRelativeDateTimeString(context,date.getTime(),DateUtils.MINUTE_IN_MILLIS,DateUtils.WEEK_IN_MILLIS,1).toString();
         }
-
+        @RequiresApi(Build.VERSION_CODES.O)
         @SuppressLint("SimpleDateFormat")
         fun getDateAgo(mongoDBTimestamp: String?): String? {
-            val dateFormat = SimpleDateFormat("dd MMM yy")
-            val date = convertToDate(mongoDBTimestamp!!)
+            val dateFormat = DateTimeFormatter.ofPattern("dd MMM yy")
+            val date = getDate(mongoDBTimestamp!!)
+            val localDate=LocalDate.parse(date.toString(),dateFormat)
 
-            // get the current date in the UTC time zone
-            val currentDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-
-            currentDate.set(Calendar.HOUR_OF_DAY, 0)
-            currentDate.set(Calendar.MINUTE, 0)
-            currentDate.set(Calendar.SECOND, 0)
-            currentDate.set(Calendar.MILLISECOND, 0)
-
-            return when (TimeUnit.MILLISECONDS.toDays(currentDate.timeInMillis - date!!.time)) {
-                0L -> "Today"
-                1L -> "Yesterday"
-                else -> dateFormat.format(date)
+            val today = LocalDate.now()
+            val yesterday = today.minus(1, ChronoUnit.DAYS)
+            return when (localDate) {
+                today -> "Today"
+                yesterday -> "Yesterday"
+                else -> date.toString()
             }
         }
+
 
 
 

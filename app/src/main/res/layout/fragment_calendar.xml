@@ -15,6 +15,34 @@
         tools:context=".ChatFragment"
 
         tools:targetApi="m">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:id="@+id/no_internet"
+            android:visibility="gone"
+            android:layout_centerInParent="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:text="Oops!Cannot fetch events at the moment!"
+                style="@style/whiteText"
+                />
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:id="@+id/reload_btn"
+                android:text="Retry"
+                android:backgroundTint="@color/blue"
+                android:paddingHorizontal="30dp"
+                app:cornerRadius="8dp"
+                android:textAllCaps="false"
+                />
+
+        </LinearLayout>
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

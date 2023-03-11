@@ -3,14 +3,12 @@ package com.serah.coparenting
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ClipData
+import android.content.*
 
 
-import android.content.ClipboardManager
 import android.content.ContentValues.TAG
-import android.content.Context
-import android.content.Intent
 import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -26,6 +24,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
@@ -60,16 +59,17 @@ import java.io.File
 class ChatFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.M)
     private lateinit var launcher: ActivityResultLauncher<Intent>
-    private lateinit var viewModel:MyViewModel
-    private lateinit var pusher:Pusher
+    private lateinit var viewModel: MyViewModel
+    private lateinit var pusher: Pusher
 
-    private lateinit var file:File
+    private lateinit var file: File
 
     private lateinit var popupView: CreateMessageBinding
 
     private lateinit var roomViewModel: RoomViewModel
 
-private lateinit var storageReference: StorageReference
+    private lateinit var storageReference: StorageReference
+
     @SuppressLint("ResourceAsColor", "SetTextI18n")
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -77,74 +77,82 @@ private lateinit var storageReference: StorageReference
         when (resultCode) {
             Activity.RESULT_OK -> {
                 val uri: Uri = data?.data!!
-                popupView.selectedImage.visibility=View.VISIBLE
+                popupView.selectedImage.visibility = View.VISIBLE
                 popupView.selectedImage.setImageURI(uri)
                 popupView.sendMsg.setOnClickListener {
                     val fileName = System.currentTimeMillis().toString()
-                    popupView.sendMsg.text="Sending ..."
+                    popupView.sendMsg.text = "Sending ..."
 
-                    storageReference = FirebaseStorage.getInstance().getReference("images/$fileName")
-                    storageReference.putFile(uri).addOnCompleteListener  {
-                        val message=HashMap<String,String>()
+                    storageReference =
+                        FirebaseStorage.getInstance().getReference("images/$fileName")
+                    storageReference.putFile(uri).addOnCompleteListener {
+                        val message = HashMap<String, String>()
                         val title = popupView.subjectInput.text.toString()
                         val body = popupView.bodyInput.text.toString()
-                        if(title.isEmpty()){
-                            popupView.subjectInput.error="Kindly fill this field!"
+                        if (title.isEmpty()) {
+                            popupView.subjectInput.error = "Kindly fill this field!"
 
                         }
 
                         popupView.sendMsg.setBackgroundColor(R.color.dark_gray)
                         message["body"] = body
                         message["title"] = title
-                        message["image"]=fileName
+                        message["image"] = fileName
 
 
 
-                        RetrofitHandler.sendMessage(requireContext(),message,object: MessageInterface{
-                            @SuppressLint("InflateParams", "SetTextI18n")
-                            override fun success(message: SentMessage) {
-                                val toast = Toast(context)
-                                val customToast: View = layoutInflater.inflate(
-                                    R.layout.message_sent,
-                                    null,
+                        RetrofitHandler.sendMessage(
+                            requireContext(),
+                            message,
+                            object : MessageInterface {
+                                @SuppressLint("InflateParams", "SetTextI18n")
+                                override fun success(message: SentMessage) {
+                                    val toast = Toast(context)
+                                    val customToast: View = layoutInflater.inflate(
+                                        R.layout.message_sent,
+                                        null,
 
-                                    )
-                                toast.setGravity(Gravity.TOP or Gravity.FILL_HORIZONTAL, 0, 40)
+                                        )
+                                    toast.setGravity(Gravity.TOP or Gravity.FILL_HORIZONTAL, 0, 40)
 
-                                toast.duration = Toast.LENGTH_SHORT
-                                toast.setView(customToast)
-                                toast.show()
-                                popupView.subjectInput.text.clear()
-                                popupView.bodyInput.text.clear()
-                                popupView.sendMsg.text="Send"
-                                popupView.selectedImage.setImageURI(null)
-                                popupView.selectedImage.visibility=View.GONE
+                                    toast.duration = Toast.LENGTH_SHORT
+                                    toast.setView(customToast)
+                                    toast.show()
+                                    popupView.subjectInput.text.clear()
+                                    popupView.bodyInput.text.clear()
+                                    popupView.sendMsg.text = "Send"
+                                    popupView.selectedImage.setImageURI(null)
+                                    popupView.selectedImage.visibility = View.GONE
 
 
+                                }
 
-                            }
-                            @SuppressLint("ResourceAsColor", "SetTextI18n")
-                            override fun failure(throwable: Throwable) {
-                                Toast.makeText(context,"T ${throwable.message}",Toast.LENGTH_LONG).show()
-                                popupView.sendMsg.text="Send"
-                                popupView.sendMsg.setBackgroundColor(R.color.blue)
+                                @SuppressLint("ResourceAsColor", "SetTextI18n")
+                                override fun failure(throwable: Throwable) {
+                                    Toast.makeText(
+                                        context,
+                                        "T ${throwable.message}",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    popupView.sendMsg.text = "Send"
+                                    popupView.sendMsg.setBackgroundColor(R.color.blue)
 
-                            }
+                                }
 
-                            @SuppressLint("ResourceAsColor", "SetTextI18n")
-                            override fun errorExists(message: String) {
-                                Toast.makeText(context,message,Toast.LENGTH_LONG).show()
-                                popupView.sendMsg.text="Send"
-                                popupView.sendMsg.setBackgroundColor(R.color.blue)
-                            }
+                                @SuppressLint("ResourceAsColor", "SetTextI18n")
+                                override fun errorExists(message: String) {
+                                    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                                    popupView.sendMsg.text = "Send"
+                                    popupView.sendMsg.setBackgroundColor(R.color.blue)
+                                }
 
-                        })
+                            })
                     }
                 }
             }
             ImagePicker.RESULT_ERROR -> {
-    //            Toast.makeText(this, ImagePicker.getError(data).toString(), Toast.LENGTH_SHORT).show()
-                Log.d("Upload Error",ImagePicker.getError(data))
+                //            Toast.makeText(this, ImagePicker.getError(data).toString(), Toast.LENGTH_SHORT).show()
+                Log.d("Upload Error", ImagePicker.getError(data))
             }
             else -> {
 
@@ -152,6 +160,7 @@ private lateinit var storageReference: StorageReference
             }
         }
     }
+
     @SuppressLint("ResourceAsColor", "SetTextI18n", "NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -182,14 +191,12 @@ private lateinit var storageReference: StorageReference
         )
 
 
-
-
 //        view Model for chats functionality i.e handling offline storage with room
-        roomViewModel= ViewModelProvider(this)[RoomViewModel::class.java]
+        roomViewModel = ViewModelProvider(this)[RoomViewModel::class.java]
 
 
 //        observing changes in allMessages
-        roomViewModel.allMessages.observe(viewLifecycleOwner){messages->
+        roomViewModel.allMessages.observe(viewLifecycleOwner) { messages ->
             messagesList.clear()
             messagesList.addAll(messages)
             adapter.notifyDataSetChanged()
@@ -216,8 +223,8 @@ private lateinit var storageReference: StorageReference
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
             binding.root.addView(background, layoutParams)
-            background.isFocusable=false
-            background.isClickable=true
+            background.isFocusable = false
+            background.isClickable = true
 
             popupWindow.showAtLocation(it, Gravity.CENTER, 0, 0)
 
@@ -227,7 +234,7 @@ private lateinit var storageReference: StorageReference
             }
 
 
-            popupView.cancel.setOnClickListener{
+            popupView.cancel.setOnClickListener {
                 popupWindow.dismiss()
             }
             popupView.cancel.setOnClickListener {
@@ -236,63 +243,67 @@ private lateinit var storageReference: StorageReference
             popupView.sendMsg.setOnClickListener {
                 val title = popupView.subjectInput.text.toString()
                 val body = popupView.bodyInput.text.toString()
-                if(title.isEmpty()){
-                    popupView.subjectInput.error="Kindly fill this field!"
+                if (title.isEmpty()) {
+                    popupView.subjectInput.error = "Kindly fill this field!"
 
                 }
-                if(body.isEmpty()){
-                    popupView.bodyInput.error="Kindly fill this field!"
+                if (body.isEmpty()) {
+                    popupView.bodyInput.error = "Kindly fill this field!"
                 }
-                if(body.isNotEmpty() && title.isNotEmpty()){
-                    val message=HashMap<String,String>()
-                    popupView.sendMsg.text="Sending ..."
+                if (body.isNotEmpty() && title.isNotEmpty()) {
+                    val message = HashMap<String, String>()
+                    popupView.sendMsg.text = "Sending ..."
                     popupView.sendMsg.setBackgroundColor(R.color.dark_gray)
                     message["body"] = body
                     message["title"] = title
-                    RetrofitHandler.sendMessage(requireContext(),message,object: MessageInterface{
-                        override fun success(message: SentMessage) {
-                            val toast = Toast(context)
-                            val customToast: View = layoutInflater.inflate(
-                                R.layout.message_sent,
-                                container,
-                                false
-                            )
-                            toast.setGravity(Gravity.TOP or Gravity.FILL_HORIZONTAL, 0, 40)
+                    RetrofitHandler.sendMessage(
+                        requireContext(),
+                        message,
+                        object : MessageInterface {
+                            override fun success(message: SentMessage) {
+                                val toast = Toast(context)
+                                val customToast: View = layoutInflater.inflate(
+                                    R.layout.message_sent,
+                                    container,
+                                    false
+                                )
+                                toast.setGravity(Gravity.TOP or Gravity.FILL_HORIZONTAL, 0, 40)
 
-                            toast.duration = Toast.LENGTH_SHORT
-                            toast.setView(customToast)
-                            toast.show()
-                            popupView.subjectInput.text.clear()
-                            popupView.bodyInput.text.clear()
-                            popupView.sendMsg.text="Send"
+                                toast.duration = Toast.LENGTH_SHORT
+                                toast.setView(customToast)
+                                toast.show()
+                                popupView.subjectInput.text.clear()
+                                popupView.bodyInput.text.clear()
+                                popupView.sendMsg.text = "Send"
 
 
+                            }
 
-                        }
-                        @SuppressLint("ResourceAsColor", "SetTextI18n")
-                        override fun failure(throwable: Throwable) {
-                            Toast.makeText(context,"T ${throwable.message}",Toast.LENGTH_LONG).show()
-                            popupView.sendMsg.text="Send"
-                            popupView.sendMsg.setBackgroundColor(R.color.blue)
-                        }
-                        @SuppressLint("ResourceAsColor", "SetTextI18n")
-                        override fun errorExists(message: String) {
-                            Toast.makeText(context,message,Toast.LENGTH_LONG).show()
-                            popupView.sendMsg.text="Send"
-                            popupView.sendMsg.setBackgroundColor(R.color.blue)
-                        }
+                            @SuppressLint("ResourceAsColor", "SetTextI18n")
+                            override fun failure(throwable: Throwable) {
+                                Toast.makeText(context, "T ${throwable.message}", Toast.LENGTH_LONG)
+                                    .show()
+                                popupView.sendMsg.text = "Send"
+                                popupView.sendMsg.setBackgroundColor(R.color.blue)
+                            }
 
-                    })
+                            @SuppressLint("ResourceAsColor", "SetTextI18n")
+                            override fun errorExists(message: String) {
+                                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                                popupView.sendMsg.text = "Send"
+                                popupView.sendMsg.setBackgroundColor(R.color.blue)
+                            }
+
+                        })
                 }
             }
 
 
         }
 
-            popupWindow.setOnDismissListener {
-                binding.root.removeViewAt(binding.root.childCount - 1)
-            }
-
+        popupWindow.setOnDismissListener {
+            binding.root.removeViewAt(binding.root.childCount - 1)
+        }
 
 
 //        configuring pusher
@@ -303,23 +314,26 @@ private lateinit var storageReference: StorageReference
 
         val userId = MyPreferences.getItemFromSP(requireContext(), "userId")
 
-         pusher = Pusher("cf1a6d90710b2e4a1f85", options)
+        pusher = Pusher("cf1a6d90710b2e4a1f85", options)
 
-        newChat.visibility=View.GONE
-        if(isInternetConnected()) {
+
+        newChat.visibility = View.GONE
+        if (isInternetConnected()) {
+            newChat.visibility = View.VISIBLE
+            pusher = Pusher("cf1a6d90710b2e4a1f85", options)
             RetrofitHandler.getCurrentUser(requireContext(), object : UserInterface {
                 override fun success(user: User) {
                     if (user.coparent == null) {
                         progressbar.visibility = View.GONE
                         recyclerView.visibility = View.GONE
 
-                        binding.noCoparent.visibility=View.VISIBLE
+                        binding.noCoparent.visibility = View.VISIBLE
                         binding.sendEmail.setOnClickListener {
                             val recipient = binding.inputEmail.text.toString()
                             if (recipient.isEmpty()) {
                                 binding.inputEmailLayout.error = "Kindly fill this field"
                             } else {
-                                binding.sendEmail.text="Sending ..."
+                                binding.sendEmail.text = "Sending ..."
                                 RetrofitHandler.sendEmail(requireContext(), recipient, object :
                                     ResponseBodyInterface {
                                     override fun success(response: ResponseBody) {
@@ -329,7 +343,7 @@ private lateinit var storageReference: StorageReference
                                             Toast.LENGTH_LONG
                                         ).show()
                                         binding.inputEmail.text!!.clear()
-                                        binding.sendEmail.text="Send"
+                                        binding.sendEmail.text = "Send"
                                     }
 
                                     override fun failure(throwable: Throwable) {
@@ -338,29 +352,57 @@ private lateinit var storageReference: StorageReference
                                             throwable.message,
                                             Toast.LENGTH_LONG
                                         ).show()
-                                        binding.sendEmail.text="Send"
+                                        binding.sendEmail.text = "Send"
                                     }
+
                                     override fun errorExists(message: String) {
                                         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG)
                                             .show()
-                                        binding.sendEmail.text="Send"
+                                        binding.sendEmail.text = "Send"
                                     }
                                 })
                             }
                         }
-                        binding.userId.text=user.userId
+                        binding.userId.text = user.userId
                         binding.copyToClipBoard.setOnClickListener {
-                            val activity=activity as AppCompatActivity
-                            val clipboardManager =activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            val activity = activity as AppCompatActivity
+                            val clipboardManager =
+                                activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                             val clipData = ClipData.newPlainText("text", user.userId)
                             clipboardManager.setPrimaryClip(clipData)
-                            Toast.makeText(requireContext(), "Text copied to clipboard", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Text copied to clipboard",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                    } else{
-                        newChat.visibility=View.VISIBLE
+                    } else {
+                        newChat.visibility = View.VISIBLE
                         popupView.recipientName.text = "${user.firstName} ${user.lastName}"
-                        roomViewModel.addUser(User2(user.userId,user.firstName,user.lastName,user.email,user.phone,user.coparent.userId,user.profilePic,user.createdAt))
-                        roomViewModel.addUser(User2(user.coparent.userId,user.coparent.firstName,user.coparent.lastName,user.coparent.email,user.coparent.phone,user.coparent.coparent,user.coparent.profilePic,user.coparent.createdAt))
+                        roomViewModel.addUser(
+                            User2(
+                                user.userId,
+                                user.firstName,
+                                user.lastName,
+                                user.email,
+                                user.phone,
+                                user.coparent.userId,
+                                user.profilePic,
+                                user.createdAt
+                            )
+                        )
+                        roomViewModel.addUser(
+                            User2(
+                                user.coparent.userId,
+                                user.coparent.firstName,
+                                user.coparent.lastName,
+                                user.coparent.email,
+                                user.coparent.phone,
+                                user.coparent.coparent,
+                                user.coparent.profilePic,
+                                user.coparent.createdAt
+                            )
+                        )
                     }
                 }
 
@@ -415,14 +457,24 @@ private lateinit var storageReference: StorageReference
                     e.printStackTrace()
                 }
             }
-            RetrofitHandler.getMessages(requireContext(),object:MessagesInterface{
+            RetrofitHandler.getMessages(requireContext(), object : MessagesInterface {
                 override fun success(messages: List<Message>) {
-                    val roomMessages:List<MessageRetrieved> = roomViewModel.allMessages.value ?: ArrayList()
-                    val notSaved=messages.filterNot { it1 -> it1._id in roomMessages.map { it.message.id } }
+                    val roomMessages: List<MessageRetrieved> =
+                        roomViewModel.allMessages.value ?: ArrayList()
+                    val notSaved =
+                        messages.filterNot { it1 -> it1._id in roomMessages.map { it.message.id } }
 
-                    val messagesToSave=ArrayList<MessageToSave>()
+                    val messagesToSave = ArrayList<MessageToSave>()
                     notSaved.forEach { message ->
-                        val messageToSave=MessageToSave(message._id,message.title,message.body,message.image,message.sender.userId,message.recipient.userId,message.createdAt)
+                        val messageToSave = MessageToSave(
+                            message._id,
+                            message.title,
+                            message.body,
+                            message.image,
+                            message.sender.userId,
+                            message.recipient.userId,
+                            message.createdAt
+                        )
                         messagesToSave.add(messageToSave)
                     }
                     roomViewModel.addMessages(*messagesToSave.toTypedArray())
@@ -437,8 +489,12 @@ private lateinit var storageReference: StorageReference
                 }
 
             })
-        }else{
-            Toast.makeText(requireContext(), "No internet connection!Make sure that you are connected to the internet.", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "No internet connection!Make sure that you are connected to the internet.",
+                Toast.LENGTH_LONG
+            ).show()
         }
         return binding.root
     }
@@ -455,35 +511,11 @@ private lateinit var storageReference: StorageReference
             .start()
 
     }
+
     private fun isInternetConnected(): Boolean {
         val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = connectivityManager.activeNetworkInfo
         return activeNetwork != null && activeNetwork.isConnected
     }
-
-
-//
-//    override fun onStart() {
-//        super.onStart()
-//        val user: FirebaseUser? = firebaseAuth.currentUser
-//        if (user != null) {
-//            isSignedIn=true
-//        } else {
-//            signInAnonymously()
-//        }
-//    }
-//    private fun signInAnonymously() {
-//        firebaseAuth.signInAnonymously().addOnSuccessListener(activity as Activity) {
-//            isSignedIn = true
-//        }
-//            .addOnFailureListener(activity as Activity
-//            ) { exception ->
-//                isSignedIn = false
-//                Log.e(
-//                    TAG,
-//                    "signInAnonymously:FAILURE",
-//                    exception
-//                )
-//            }
-//    }
 }
+

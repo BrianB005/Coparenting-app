@@ -16,6 +16,7 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.pusher.client.Pusher
 import com.pusher.client.PusherOptions
 import com.pusher.client.connection.ConnectionEventListener
@@ -47,7 +48,6 @@ class ExpensesFragment : Fragment() {
 
         val recyclerView=binding.recyclerView
         val progressBar=binding.progressView
-        progressBar.visibility=View.VISIBLE
         recyclerView.visibility=View.GONE
         val allExpenses=ArrayList<Expense>()
 
@@ -146,30 +146,7 @@ class ExpensesFragment : Fragment() {
 
         pusher = Pusher("cf1a6d90710b2e4a1f85", options)
         if(isInternetConnected()){
-            RetrofitHandler.getExpenses(requireContext(),object:ExpensesInterface{
-                @SuppressLint("NotifyDataSetChanged")
-                override fun success(expenses: List<Expense>) {
-                    progressBar.visibility = View.GONE
-                    if(expenses.isEmpty()){
-                        binding.noExpenses.visibility=View.VISIBLE
-                    }else {
-
-                        recyclerView.visibility = View.VISIBLE
-                        allExpenses.addAll(expenses)
-                        adapter.notifyDataSetChanged()
-                    }
-                }
-
-                override fun failure(throwable: Throwable) {
-                    progressBar.visibility = View.GONE
-                    Toast.makeText(requireContext(),throwable.message,Toast.LENGTH_SHORT).show()
-                }
-
-                override fun errorExists(message: String) {
-                    Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show()
-                }
-
-            })
+            loadData(binding,progressBar,recyclerView,allExpenses,adapter)
             try {
                 pusher.connect(object : ConnectionEventListener {
                     override fun onConnectionStateChange(change: ConnectionStateChange) {
@@ -189,88 +166,42 @@ class ExpensesFragment : Fragment() {
                 val channel1 = pusher.subscribe(userId)
 
                 channel1.bind("expense") {
-                    RetrofitHandler.getExpenses(requireContext(), object : ExpensesInterface {
-                        @SuppressLint("NotifyDataSetChanged")
-                        override fun success(expenses: List<Expense>) {
-                            progressBar.visibility = View.GONE
-                            if (expenses.isEmpty()) {
-                                binding.noExpenses.visibility = View.VISIBLE
-                            } else {
-                                binding.noExpenses.visibility = View.GONE
-                                recyclerView.visibility = View.VISIBLE
-                                allExpenses.clear()
-                                allExpenses.addAll(expenses)
-                                adapter.notifyDataSetChanged()
-                            }
-                        }
-
-                        override fun failure(throwable: Throwable) {
-                            progressBar.visibility = View.GONE
-                            Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_SHORT)
-                                .show()
-                        }
-
-                        override fun errorExists(message: String) {
-                            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                        }
-
-                    })
+                    loadData(binding,progressBar,recyclerView,allExpenses,adapter)
                 }
             } catch (e: Exception) {
                 // Show an error message to the user
                 Toast.makeText(requireContext(), "Internet connectivity lost!", Toast.LENGTH_SHORT).show()
-
-
-                Handler().postDelayed({
-                    pusher.connect(object : ConnectionEventListener {
-                        override fun onConnectionStateChange(change: ConnectionStateChange) {
-                            Log.i(
-                                "Pusher expenses", "State changed from " + change.previousState +
-                                        " to " + change.currentState
-                            )
-                        }
-
-                        override fun onError(message: String, code: String, e: Exception) {
-                            Log.i(
-                                "Pusher",
-                                "There was a problem connecting! code: $code message: $message"
-                            )
-                        }
-                    }, ConnectionState.ALL)
-                    val channel1 = pusher.subscribe(userId)
-
-                    channel1.bind("expense") {
-                        RetrofitHandler.getExpenses(requireContext(), object : ExpensesInterface {
-                            @SuppressLint("NotifyDataSetChanged")
-                            override fun success(expenses: List<Expense>) {
-                                progressBar.visibility = View.GONE
-                                if (expenses.isEmpty()) {
-                                    binding.noExpenses.visibility = View.VISIBLE
-                                } else {
-                                    binding.noExpenses.visibility = View.GONE
-                                    recyclerView.visibility = View.VISIBLE
-                                    allExpenses.clear()
-                                    allExpenses.addAll(expenses)
-                                    adapter.notifyDataSetChanged()
-                                }
-                            }
-
-                            override fun failure(throwable: Throwable) {
-                                progressBar.visibility = View.GONE
-                                Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_SHORT)
-                                    .show()
-                            }
-
-                            override fun errorExists(message: String) {
-                                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                            }
-
-                        })
-                    }
-                }, 5000) // Retry after 5 seconds
+//
+//
+//                Handler().postDelayed({
+//                    pusher.connect(object : ConnectionEventListener {
+//                        override fun onConnectionStateChange(change: ConnectionStateChange) {
+//                            Log.i(
+//                                "Pusher expenses", "State changed from " + change.previousState +
+//                                        " to " + change.currentState
+//                            )
+//                        }
+//
+//                        override fun onError(message: String, code: String, e: Exception) {
+//                            Log.i(
+//                                "Pusher",
+//                                "There was a problem connecting! code: $code message: $message"
+//                            )
+//                        }
+//                    }, ConnectionState.ALL)
+//                    val channel1 = pusher.subscribe(userId)
+//
+//                    channel1.bind("expense") {
+//                        loadData(binding,progressBar,recyclerView,allExpenses,adapter)
+//                    }
+//                }, 5000) // Retry after 5 seconds
             }
         }
         else{
+            binding.noInternet.visibility=View.VISIBLE
+            binding.reloadBtn.setOnClickListener {
+                loadData(binding,progressBar,recyclerView,allExpenses,adapter)
+            }
             Toast.makeText(requireContext(), "No internet connection!Make sure that you are connected to the internet.", Toast.LENGTH_LONG).show()
         }
         return binding.root
@@ -279,5 +210,43 @@ class ExpensesFragment : Fragment() {
         val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = connectivityManager.activeNetworkInfo
         return activeNetwork != null && activeNetwork.isConnected
+    }
+
+    private fun loadData(binding: FragmentExpensesBinding,progressBar:View,recyclerView:RecyclerView,allExpenses:ArrayList<Expense>,adapter:ExpensesRecyclerViewAdapter){
+        if(isInternetConnected()) {
+            progressBar.visibility = View.VISIBLE
+            RetrofitHandler.getExpenses(requireContext(), object : ExpensesInterface {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun success(expenses: List<Expense>) {
+                    progressBar.visibility = View.GONE
+                    if (expenses.isEmpty()) {
+                        binding.noExpenses.visibility = View.VISIBLE
+                    } else {
+                        binding.noExpenses.visibility = View.GONE
+                        recyclerView.visibility = View.VISIBLE
+                        allExpenses.clear()
+                        allExpenses.addAll(expenses)
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+                override fun failure(throwable: Throwable) {
+                    progressBar.visibility = View.GONE
+                    Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                override fun errorExists(message: String) {
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                }
+
+            })
+
+        }else{
+            binding.noInternet.visibility=View.VISIBLE
+            binding.reloadBtn.setOnClickListener {
+                loadData(binding,progressBar,recyclerView,allExpenses,adapter)
+            }
+            Toast.makeText(requireContext(), "No internet connection!Make sure that you are connected to the internet.", Toast.LENGTH_LONG).show()
+        }
     }
 }

@@ -367,7 +367,6 @@ class GalleryFragment : Fragment() {
     }
 
 
-
     private fun parseError(activityResult: ActivityResult) {
         if (activityResult.resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(context, ImagePicker.getError(activityResult.data), Toast.LENGTH_SHORT)

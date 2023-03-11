@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.pusher.client.Pusher
 import com.pusher.client.PusherOptions
 import com.pusher.client.connection.ConnectionEventListener
@@ -25,6 +26,7 @@ import com.pusher.client.connection.ConnectionStateChange
 
 import com.serah.coparenting.databinding.CreateEventBinding
 import com.serah.coparenting.databinding.FragmentCalendarBinding
+import com.serah.coparenting.databinding.FragmentExpensesBinding
 import com.serah.coparenting.retrofit.*
 import okhttp3.ResponseBody
 import java.time.LocalDateTime
@@ -54,8 +56,6 @@ class CalendarFragment : Fragment() {
         recyclerView.adapter=adapter
         val progressbar=binding.progressView
 
-
-        progressbar.visibility=View.VISIBLE
         recyclerView.visibility=View.GONE
 
         binding.createEvent.setOnClickListener {
@@ -174,45 +174,20 @@ class CalendarFragment : Fragment() {
 
         }
 
-        //    /        configuring pusher
-        val options = PusherOptions()
-        options.setCluster("mt1")
 
-        options.isUseTLS = true
-
-        val userId = MyPreferences.getItemFromSP(requireContext(), "userId")
-
-        pusher = Pusher("cf1a6d90710b2e4a1f85", options)
 
         if(isInternetConnected()) {
-            RetrofitHandler.getEvents(requireContext(),object:EventsInterface{
-                @SuppressLint("NotifyDataSetChanged")
-                override fun success(events: List<Event>) {
-                    Log.d("Events",events.toString())
-                    if(events.isEmpty()){
-                        binding.noEvents.visibility=View.VISIBLE
-                        recyclerView.visibility=View.GONE
-                    }
-                    allEvents.addAll(events)
-                    adapter.notifyDataSetChanged()
-                    progressbar.visibility=View.GONE
-                    recyclerView.visibility=View.VISIBLE
-                }
+            loadData(binding,progressbar,recyclerView,allEvents,adapter)
+            //    /        configuring pusher
+            val options = PusherOptions()
+            options.setCluster("mt1")
 
-                override fun failure(throwable: Throwable) {
+            options.isUseTLS = true
 
-                    progressbar.visibility=View.GONE
-                    recyclerView.visibility=View.VISIBLE
-                    Toast.makeText(context,"T ${throwable.message}",Toast.LENGTH_LONG).show()
-                }
+            val userId = MyPreferences.getItemFromSP(requireContext(), "userId")
 
-                override fun errorExists(message: String) {
-                    Toast.makeText(context,message,Toast.LENGTH_LONG).show()
-                    progressbar.visibility=View.GONE
-                    recyclerView.visibility=View.VISIBLE
-                }
+            pusher = Pusher("cf1a6d90710b2e4a1f85", options)
 
-            })
             pusher.connect(object : ConnectionEventListener {
                 override fun onConnectionStateChange(change: ConnectionStateChange) {
                     Log.i(
@@ -229,42 +204,12 @@ class CalendarFragment : Fragment() {
             }, ConnectionState.ALL)
             val channel1 = pusher.subscribe(userId)
 
-            channel1.bind("event") { event ->
-                RetrofitHandler.getEvents(requireContext(), object : EventsInterface {
-                    @SuppressLint("NotifyDataSetChanged")
-                    override fun success(events: List<Event>) {
-                        Log.d("Events", events.toString())
-                        if (events.isEmpty()) {
-                            binding.noEvents.visibility = View.VISIBLE
-                            recyclerView.visibility = View.GONE
-                        } else {
-                            binding.noEvents.visibility = View.GONE
-                            allEvents.clear()
-                            allEvents.addAll(events)
-                            adapter.notifyDataSetChanged()
-
-                            recyclerView.visibility = View.VISIBLE
-                        }
-                        progressbar.visibility = View.GONE
-                    }
-
-                    override fun failure(throwable: Throwable) {
-
-                        progressbar.visibility = View.GONE
-                        recyclerView.visibility = View.VISIBLE
-                        Toast.makeText(context, "T ${throwable.message}", Toast.LENGTH_LONG).show()
-                    }
-
-                    override fun errorExists(message: String) {
-                        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-                        progressbar.visibility = View.GONE
-                        recyclerView.visibility = View.VISIBLE
-                    }
-
-                })
+            channel1.bind("event") {
+                loadData(binding,progressbar,recyclerView,allEvents,adapter)
             }
         }
         else{
+
             Toast.makeText(requireContext(), "No internet connection!Make sure that you are connected to the internet.", Toast.LENGTH_LONG).show()
         }
         return binding.root
@@ -273,5 +218,36 @@ class CalendarFragment : Fragment() {
         val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = connectivityManager.activeNetworkInfo
         return activeNetwork != null && activeNetwork.isConnected
+    }
+    private fun loadData(binding: FragmentCalendarBinding, progressBar:View, recyclerView: RecyclerView, allEvents:ArrayList<Event>, adapter:EventsRecyclerViewAdapter){
+        progressBar.visibility=View.VISIBLE
+        RetrofitHandler.getEvents(requireContext(),object:EventsInterface{
+            @SuppressLint("NotifyDataSetChanged")
+            override fun success(events: List<Event>) {
+                Log.d("Events",events.toString())
+                if(events.isEmpty()){
+                    binding.noEvents.visibility=View.VISIBLE
+                    recyclerView.visibility=View.GONE
+                }
+                allEvents.addAll(events)
+                adapter.notifyDataSetChanged()
+                progressBar.visibility=View.GONE
+                recyclerView.visibility=View.VISIBLE
+            }
+
+            override fun failure(throwable: Throwable) {
+
+                progressBar.visibility=View.GONE
+                recyclerView.visibility=View.VISIBLE
+                Toast.makeText(context,"T ${throwable.message}",Toast.LENGTH_LONG).show()
+            }
+
+            override fun errorExists(message: String) {
+                Toast.makeText(context,message,Toast.LENGTH_LONG).show()
+                progressBar.visibility=View.GONE
+                recyclerView.visibility=View.VISIBLE
+            }
+
+        })
     }
 }

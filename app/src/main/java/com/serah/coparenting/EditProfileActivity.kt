@@ -67,7 +67,7 @@ class EditProfileActivity : AppCompatActivity() {
                     else{
                         val update=HashMap<String,String>()
                         update["firstName"]=firstName
-                        update["lastName"]=firstName
+                        update["lastName"]=lastName
                         update["phone"]=phone
                         binding.updateMyDetails.text="Updating ..."
                         RetrofitHandler.updateUser(applicationContext,update,object:ResponseBodyInterface{
@@ -173,9 +173,8 @@ class EditProfileActivity : AppCompatActivity() {
                     update["profilePic"]=fileName.toString()
                     RetrofitHandler.updateUser(applicationContext,update,object :ResponseBodyInterface{
                         override fun success(response: ResponseBody) {
-                            Log.d("Success","Successfully updated")
+                            Toast.makeText(applicationContext,"Profile pic updated successfully!",Toast.LENGTH_SHORT).show()
                         }
-
                         override fun failure(throwable: Throwable) {
                             Log.d("Failure",throwable.message!!)
                         }
@@ -185,7 +184,7 @@ class EditProfileActivity : AppCompatActivity() {
                         }
 
                     })
-                    Toast.makeText(applicationContext,"Profile pic updated successfully!",Toast.LENGTH_SHORT).show()
+
                 }
 
 
