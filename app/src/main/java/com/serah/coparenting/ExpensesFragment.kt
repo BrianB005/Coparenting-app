@@ -69,6 +69,9 @@ class ExpensesFragment : Fragment() {
             );
             popupWindow.showAtLocation(it, Gravity.CENTER, 0, 0)
 
+            popupView.cancel.setOnClickListener {
+                popupWindow.dismiss()
+            }
 
             popupView.create.setOnClickListener{
                 val title=popupView.expenseTitle.text.toString()
@@ -214,39 +217,48 @@ class ExpensesFragment : Fragment() {
 
     private fun loadData(binding: FragmentExpensesBinding,progressBar:View,recyclerView:RecyclerView,allExpenses:ArrayList<Expense>,adapter:ExpensesRecyclerViewAdapter){
         if(isInternetConnected()) {
-            progressBar.visibility = View.VISIBLE
-            RetrofitHandler.getExpenses(requireContext(), object : ExpensesInterface {
-                @SuppressLint("NotifyDataSetChanged")
-                override fun success(expenses: List<Expense>) {
-                    progressBar.visibility = View.GONE
-                    if (expenses.isEmpty()) {
-                        binding.noExpenses.visibility = View.VISIBLE
-                    } else {
-                        binding.noExpenses.visibility = View.GONE
-                        recyclerView.visibility = View.VISIBLE
-                        allExpenses.clear()
-                        allExpenses.addAll(expenses)
-                        adapter.notifyDataSetChanged()
+            requireActivity().runOnUiThread {
+                binding.progressView.visibility = View.VISIBLE
+                RetrofitHandler.getExpenses(requireContext(), object : ExpensesInterface {
+                    @SuppressLint("NotifyDataSetChanged")
+                    override fun success(expenses: List<Expense>) {
+                        progressBar.visibility = View.GONE
+                        if (expenses.isEmpty()) {
+                            binding.noExpenses.visibility = View.VISIBLE
+                        } else {
+                            binding.noExpenses.visibility = View.GONE
+                            binding.recyclerView.visibility = View.VISIBLE
+                            allExpenses.clear()
+                            allExpenses.addAll(expenses)
+                            adapter.notifyDataSetChanged()
+                        }
                     }
-                }
-                override fun failure(throwable: Throwable) {
-                    progressBar.visibility = View.GONE
-                    Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_SHORT)
-                        .show()
-                }
 
-                override fun errorExists(message: String) {
-                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                }
+                    override fun failure(throwable: Throwable) {
+                        progressBar.visibility = View.GONE
+                        Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_SHORT)
+                            .show()
+                    }
 
-            })
+                    override fun errorExists(message: String) {
+                        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                    }
+
+                })
+            }
 
         }else{
-            binding.noInternet.visibility=View.VISIBLE
-            binding.reloadBtn.setOnClickListener {
-                loadData(binding,progressBar,recyclerView,allExpenses,adapter)
+            requireActivity().runOnUiThread {
+                binding.noInternet.visibility = View.VISIBLE
+                binding.reloadBtn.setOnClickListener {
+                    loadData(binding, progressBar, recyclerView, allExpenses, adapter)
+                }
+                Toast.makeText(
+                    requireContext(),
+                    "No internet connection!Make sure that you are connected to the internet.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
-            Toast.makeText(requireContext(), "No internet connection!Make sure that you are connected to the internet.", Toast.LENGTH_LONG).show()
         }
     }
 }

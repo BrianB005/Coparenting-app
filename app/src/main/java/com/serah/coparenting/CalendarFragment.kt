@@ -177,7 +177,9 @@ class CalendarFragment : Fragment() {
 
 
         if(isInternetConnected()) {
-            loadData(binding,progressbar,recyclerView,allEvents,adapter)
+            requireActivity().runOnUiThread {
+                loadData(binding, progressbar, recyclerView, allEvents, adapter)
+            }
             //    /        configuring pusher
             val options = PusherOptions()
             options.setCluster("mt1")
@@ -205,7 +207,9 @@ class CalendarFragment : Fragment() {
             val channel1 = pusher.subscribe(userId)
 
             channel1.bind("event") {
-                loadData(binding,progressbar,recyclerView,allEvents,adapter)
+                requireActivity().runOnUiThread {
+                    loadData(binding, progressbar, recyclerView, allEvents, adapter)
+                }
             }
         }
         else{
